@@ -21,7 +21,7 @@ class App extends React.Component {
       
       if (userAuth){
         const userRef = await createUserProfileDocument(userAuth);
-        //建立第二个subscription
+        //建立第二个subscription 这个链接是和具体的doc一一对应的
         userRef.onSnapshot(snapshot => {
           this.setState(
             {
@@ -29,9 +29,12 @@ class App extends React.Component {
                 id: snapshot.id,
                 ...snapshot.data()
               }
+            }, () => {
+              console.log(`${userAuth.displayName} Signed In`);
+              console.log(this.state);
             });
         });
-        console.log(`${userAuth.displayName} Signed In`);
+        
       }
       
       else{

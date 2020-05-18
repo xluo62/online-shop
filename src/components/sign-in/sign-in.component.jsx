@@ -2,7 +2,7 @@ import React from 'react';
 import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { signInWithGoogle} from  '../../firebase/firebase.utils';
+import { auth, signInWithGoogle} from  '../../firebase/firebase.utils';
 
 class SignIn extends React.Component {
     constructor(props){
@@ -13,9 +13,16 @@ class SignIn extends React.Component {
         }
     }
 
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
-        this.setState({ email : '', paassword : '' });
+        try{
+            await auth.signInWithEmailAndPassword(this.state.email, this.state.password);
+            
+            this.setState({ email : '', password : '' });
+        }catch(error){
+            console.log(error);
+        }
+        
     }
     handleChange = event => {
         const { name, value } = event.target;
@@ -32,12 +39,14 @@ class SignIn extends React.Component {
                     Sign In With Your Email And Password
                 </span>
     
-                <form onSubmit={this.handleSubmit} action="">
+                <form onSubmit={this.handleSubmit} >
                     <FormInput 
                         handleChange={this.handleChange} 
-                        name='email' value={this.state.email} 
+                        name='email' 
+                        value={this.state.email} 
                         label="email" 
                         type="email"
+                        required
                     />
                     
                     <FormInput 
@@ -46,6 +55,7 @@ class SignIn extends React.Component {
                         value={this.state.password} 
                         label="password" 
                         type="password"
+                        required
                     />
                     <div className="buttons">
                         <CustomButton 
@@ -58,6 +68,7 @@ class SignIn extends React.Component {
                             isGoogleSignIn
                             onClick={signInWithGoogle}
                             children='Sign In With Google'
+                            type='button'
                         >
                         </CustomButton>
                     </div>
