@@ -29,7 +29,7 @@ class SignIn extends React.Component {
                     I already have a account
                 </h2>
                 <span>
-                    Sign in with your email and password
+                    Sign In With Your Email And Password
                 </span>
     
                 <form onSubmit={this.handleSubmit} action="">

@@ -12,7 +12,7 @@ const firebaseConfig = {
     appId: "1:1082932872140:web:5881aef9387b7f09109369",
     measurementId: "G-HHLKJQT7HZ"
   };
-
+  //这个function负责存储数据库
   export const createUserProfileDocument = async (userAuth, additionalData) => {
       if (!userAuth){
           return;
@@ -26,7 +26,6 @@ const firebaseConfig = {
           //add this
           const { displayName, email } = userAuth;
           const createdAt = new Date();
-          console.log(displayName);
           try {
               await userRef.set({
                 displayName,
