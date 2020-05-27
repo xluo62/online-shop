@@ -30,7 +30,10 @@ const Header = ({ currentUser, hidden }) => (
             }
             <CartIcon/>  
         </div>
+        {console.log("rendedededed")}
+        {console.log(hidden)}
         {
+            
             hidden ? null : <CartDropDown></CartDropDown>
         }
         
