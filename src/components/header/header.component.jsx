@@ -30,13 +30,14 @@ const Header = ({ currentUser, hidden }) => (
             }
             <CartIcon/>  
         </div>
-        {console.log("rendedededed")}
+        {console.log("header rerendered")}
         {console.log(hidden)}
         {
             
             hidden ? null : <CartDropDown></CartDropDown>
         }
         
+       
     </div>
 );
 //return 一个 state
