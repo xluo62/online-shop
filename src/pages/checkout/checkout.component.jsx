@@ -34,6 +34,7 @@ const CheckoutPage = ({total, cartItems}) => (
             ))
         }
         <div className="total">
+            {console.log("total price is rerendered")}
             <span>TOTAL: CAD { total }</span>
         </div>
     </div>
