@@ -7,6 +7,10 @@ import { connect } from 'react-redux';
 import  CartIcon  from '../cart-icon/cart-icon.component';
 
 import CartDropDown from '../cart-dropdown/cart-dropdown.component';
+
+import {selectCartHidden } from '../../redux/cart/cart.selectors';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+import { createStructuredSelector } from 'reselect';
 const Header = ({ currentUser, hidden }) => (
     <div className='header'>
         <Link className='logo-container' to='/'>
@@ -20,13 +24,15 @@ const Header = ({ currentUser, hidden }) => (
                 Shop
             </Link>
             { currentUser ? 
-                <div className='option' onClick={ () => auth.signOut() }> 
-                Sign Out
+                <div className='option'> Welcome! {currentUser.displayName}
+                    <div className = "sign-out" onClick={ () => auth.signOut() }> 
+                    Sign Out
+                    </div>
                 </div>
                 :
-            <Link className='option' to='/signin'>
-                Sign In
-            </Link>
+                <Link className='option' to='/signin'>
+                    Sign In
+                </Link>
             }
             <CartIcon/>  
         </div>
@@ -41,11 +47,20 @@ const Header = ({ currentUser, hidden }) => (
     </div>
 );
 //return 一个 state
-const mapStateToProps = ({user: { currentUser }, cart: { hidden }}) => (
-    {
-      currentUser,
-      hidden
-    }
-  )
-
+// const mapStateToProps = ({user: { currentUser }, cart: { hidden }}) => (
+//     {
+//       currentUser,
+//       hidden
+//     }
+//   )
+// const mapStateToProps = (state) => (
+//         {
+//           currentUser: selectCurrentUser(state),
+//           hidden: selectCartHidden(state)
+//         }
+//       )
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    hidden: selectCartHidden
+})
 export default connect(mapStateToProps)(Header);

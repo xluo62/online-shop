@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import CartItem from '../cart-item/cart-item.component';
 import CustomButton from '../custom-button/custom-button.component';
 import { selectCartItems } from '../../redux/cart/cart.selectors';
+import { toggleCartHidden } from '../../redux/cart/cart.actions.js';
+
 import './cart-dropdown.styles.scss';
 
-const CartDropDown = ({cartItems}) => {
+const CartDropDown = ({cartItems, history, dispatch}) => {
     console.log("cartDropDown rerendered");
     return(
     
@@ -18,15 +21,15 @@ const CartDropDown = ({cartItems}) => {
                 <div>Cart is empty</div> 
                 </div>
                 : 
-                null
-            }
-            {
                 cartItems.map(cartItem => 
-                <CartItem key={cartItem.id} item={cartItem}/>)
+                    <CartItem key={cartItem.id} item={cartItem}/>)
             }
+            
             </div>
             
-            <CustomButton>Go To Checkout </CustomButton>
+            <CustomButton onClick={
+                 () => {history.push('/checkout');
+                        dispatch(toggleCartHidden())} }>Go To Checkout </CustomButton>
         </div>
         );
 }
@@ -42,6 +45,7 @@ const CartDropDown = ({cartItems}) => {
 
 // }
 
+
 const mapStateToProps = state => {
     console.log("map state is called");
     return (
@@ -53,4 +57,4 @@ const mapStateToProps = state => {
 
 }
 
-export default connect(mapStateToProps)(CartDropDown);
+export default withRouter(connect(mapStateToProps)(CartDropDown));
