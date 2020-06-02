@@ -27,12 +27,18 @@ const CheckoutPage = ({total, cartItems}) => (
             <div className="header-block">
                 <span>Remove</span>
             </div>
+            
         </div>
-        {
+        { 
+            cartItems.length ? 
             cartItems.map( cartItem => (
                 <CheckoutItem key={cartItem.id} cartItem={cartItem} ></CheckoutItem>
             ))
+            :
+            <span className="cart-empty">Shopping Cart Is Empty</span>
         }
+        
+        
         <div className="total">
             {console.log("total price is rerendered")}
             <span>TOTAL: CAD { total }</span>
