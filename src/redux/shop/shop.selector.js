@@ -13,7 +13,7 @@ export const selectCollections = createSelector(
     [selectShop],
     shop => shop.collections
 );
-//after state normalization, collections become a huge object. we cannot use .find() to find 
+//after state normalization, collections become a huge object. we cannot use map.
 export const selectCollectionsPreview = createSelector(
     [selectCollections],
     collections => Object.keys(collections).map( key => collections[key])

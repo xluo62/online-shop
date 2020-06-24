@@ -21,7 +21,7 @@ const firebaseConfig = {
       const userRef =  firestore.doc(`user/${userAuth.uid}`);
       //get back docSanpShotObj by using .get()
       const snapShot = await userRef.get();
-
+      //console.log(userRef);
       if(!snapShot.exists){
           //add this
           const { displayName, email } = userAuth;
@@ -41,8 +41,37 @@ const firebaseConfig = {
      
 
   }
-  firebase.initializeApp(firebaseConfig);
 
+
+  export const convertCollectionsSnapshotToMap = (collections) => {
+    const transformCollection = collections.docs.map(doc => {
+      const { title, items} = doc.data();
+      return {
+        title,
+        items,
+        routeName: encodeURI(title.toLowerCase()),
+        id: doc.id
+      };
+    });
+    return transformCollection.reduce( (accumulator, collection) => {
+      accumulator[collection.title.toLowerCase()] = collection;
+      return accumulator;}, {}
+   );
+  }
+  firebase.initializeApp(firebaseConfig);
+  export const addCollectionsAndDocuments = async (CollectionKey, ObjectToAdd) => {
+    const collectionRef = firestore.collection(CollectionKey);
+    //upload in a batch. 
+    const batch = firestore.batch();
+    //objectToADD is an array of objects. use for each to manipulate each object
+    ObjectToAdd.forEach(obj => {
+      //generate a new docRef obj for me, with a random id.
+     const newDocRef = collectionRef.doc();
+     batch.set(newDocRef, obj);
+    });
+    //this returns promise;
+    return await batch.commit();
+  }
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
 

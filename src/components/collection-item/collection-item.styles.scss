@@ -2,13 +2,14 @@
   width: 22vw;
   display: flex;
   flex-direction: column;
-  height: 350px;
+  height: 360px;
   align-items: center;
   position: relative;
+  overflow: hidden;
 
   .image {
     width: 100%;
-    height: 95%;
+    height: 90%;
     background-size: cover;
     background-position: center;
     margin-bottom: 5px;
@@ -19,7 +20,8 @@
       position: absolute;
       top: 255px;
       //by default, our button should be hidden
-      display: none
+      display: none;
+      
       
   }
   &:hover {

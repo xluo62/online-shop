@@ -5,11 +5,24 @@ import { selectCollectionsPreview } from '../../redux/shop/shop.selector';
 import CollectionPreview from '../preview-collection/preview-collection.component';
 import './collections-overview.styles.scss';
 
+
+const changeCollections = (collections) => {
+   const array1 =  collections.filter(({title}) => title !== "Womens" && title !== "Mens");
+   console.log(array1);
+   const array2 =  collections.filter(({title}) => title === "Womens" || title === "Mens");
+   return array2.concat(array1);
+}
+
+
 const CollectionOverview = ({collections}) => {
+
+    const reorderedCollections = changeCollections(collections);
+   
+
     return (
         <div className="collections-overview">
             { //Trade off, we can 
-                collections.map(({id, ...CollectionProps })=> (
+                reorderedCollections.map(({id, ...CollectionProps })=> (
                 <CollectionPreview key='id' {...CollectionProps}>
                 </CollectionPreview>
                 ))

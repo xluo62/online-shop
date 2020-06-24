@@ -1,7 +1,15 @@
 import React from 'react';
-import './header.styles.scss';
-import { Link } from 'react-router-dom';
-import { ReactComponent as Logo } from '../../assets/leaf.svg';
+import {
+    HeaderContainer,
+    LogoContainer,
+    OptionsContainer,
+    OptionLink,
+    SignOut,
+    LogoModifier
+  } from './header.styles';
+//import './header.styles.scss';
+//import { Link } from 'react-router-dom';
+//import { ReactComponent as Logo } from '../../assets/leaf.svg';
 import { auth } from '../../firebase/firebase.utils';
 import { connect } from 'react-redux';
 import  CartIcon  from '../cart-icon/cart-icon.component';
@@ -12,30 +20,30 @@ import {selectCartHidden } from '../../redux/cart/cart.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selector';
 import { createStructuredSelector } from 'reselect';
 const Header = ({ currentUser, hidden }) => (
-    <div className='header'>
-        <Link className='logo-container' to='/'>
-            <Logo className='Logo'></Logo>
-        </Link>
-        <div className='options'>
-            <Link className='option' to='/shop'>
+    <HeaderContainer>
+        <LogoContainer to='/'>
+            <LogoModifier></LogoModifier>
+        </LogoContainer>
+        <OptionsContainer>
+            <OptionLink to='/shop'>
                 Shop
-            </Link>
-            <Link className='option' to='/shop'>
+            </OptionLink>
+            <OptionLink to='/shop'>
                 Contact
-            </Link>
+            </OptionLink>
             { currentUser ? 
-                <div className='option'> Welcome! {currentUser.displayName}
-                    <div className = "sign-out" onClick={ () => auth.signOut() }> 
+                <OptionLink as= 'div'> Welcome! {currentUser.displayName}
+                    <SignOut onClick={ () => auth.signOut() }> 
                     Sign Out
-                    </div>
-                </div>
+                    </SignOut>
+                </OptionLink>
                 :
-                <Link className='option' to='/signin'>
+                <OptionLink to='/signin'>
                     Sign In
-                </Link>
+                </OptionLink>
             }
             <CartIcon/>  
-        </div>
+        </OptionsContainer>
         {console.log("header rerendered")}
         {console.log(hidden)}
         {
@@ -44,7 +52,7 @@ const Header = ({ currentUser, hidden }) => (
         }
         
        
-    </div>
+    </HeaderContainer>
 );
 //return 一个 state
 // const mapStateToProps = ({user: { currentUser }, cart: { hidden }}) => (

@@ -8,15 +8,16 @@ import CheckoutPage from './pages/checkout/checkout.component';
 import ShopPage from './pages/shoppage/shop.component';
 import Header from './components/header/header.component';
 import SignINAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { createStructuredSelector } from 'reselect';
-
+//import { selectCollectionsPreview } from './redux/shop/shop.selector';
 class App extends React.Component {
   
   unsubscribeFromAuth = null;
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    console.log('I have mounted');
+    const { setCurrentUser} = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth){
         const userRef = await createUserProfileDocument(userAuth);
@@ -30,15 +31,17 @@ class App extends React.Component {
         });
         
       }
-      
       else{
         setCurrentUser(userAuth);
         console.log( `user: ${userAuth}` );
       }
+      //addCollectionsAndDocuments('collections', 
+      //collectionsArray.map(({title, items}) => ({ title, items })));
    
     })
   }
   componentWillUnmount() {
+    console.log('I have unmounted');
     this.unsubscribeFromAuth();
   }
   
@@ -54,7 +57,7 @@ class App extends React.Component {
             exact 
             path='/signin' 
             render={() => this.props.currentUser ? 
-            (<Redirect tp='/'/>)
+            (<Redirect to='/'/>)
             :
             (<SignINAndSignUpPage/>)
             }>
@@ -73,7 +76,8 @@ const mapDispatchToProps = dispatch => (
 )
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  //collectionsArray: selectCollectionsPreview
 })
 
 export default  connect(mapStateToProps, mapDispatchToProps)(App) ;
