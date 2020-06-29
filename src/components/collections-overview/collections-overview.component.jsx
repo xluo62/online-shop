@@ -8,7 +8,7 @@ import './collections-overview.styles.scss';
 
 const changeCollections = (collections) => {
    const array1 =  collections.filter(({title}) => title !== "Womens" && title !== "Mens");
-   console.log(array1);
+   
    const array2 =  collections.filter(({title}) => title === "Womens" || title === "Mens");
    return array2.concat(array1);
 }

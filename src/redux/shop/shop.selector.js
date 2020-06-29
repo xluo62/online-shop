@@ -16,8 +16,8 @@ export const selectCollections = createSelector(
 //after state normalization, collections become a huge object. we cannot use map.
 export const selectCollectionsPreview = createSelector(
     [selectCollections],
-    collections => Object.keys(collections).map( key => collections[key])
-)
+    collections => collections ? Object.keys(collections).map( key => collections[key]) : []
+);
 // export const selectCollection = (collectionUrlParam) => 
 //     createSelector(
 //         [selectCollections],
@@ -26,5 +26,15 @@ export const selectCollectionsPreview = createSelector(
  export const selectCollection = (collectionUrlParam) => 
  createSelector(
      [selectCollections],
-     collections => collections[collectionUrlParam]
+     collections => collections ? collections[collectionUrlParam] : null
  );
+
+ export const selectIsCollectionFetching = createSelector(
+     [selectShop],
+     shop => shop.isFetching
+ );
+
+ export const selectIsCollectionLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
+);

@@ -42,7 +42,7 @@ const firebaseConfig = {
 
   }
 
-
+  //this function is not async. Only change the array to object.
   export const convertCollectionsSnapshotToMap = (collections) => {
     const transformCollection = collections.docs.map(doc => {
       const { title, items} = doc.data();
