@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import {  connect } from 'react-redux';
@@ -12,13 +12,14 @@ import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { createStructuredSelector } from 'reselect';
 //import { selectCollectionsPreview } from './redux/shop/shop.selector';
-class App extends React.Component {
-  
-  unsubscribeFromAuth = null;
-  componentDidMount() {
+const App = (props) => {
+ 
+  let unsubscribeFromAuth = null;
+
+  useEffect(() => {
     console.log('I have mounted');
-    const { setCurrentUser} = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    const { setCurrentUser} = props;
+    unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth){
         const userRef = await createUserProfileDocument(userAuth);
         //建立第二个subscription 这个链接是和具体的doc一一对应的
@@ -39,13 +40,16 @@ class App extends React.Component {
       //collectionsArray.map(({title, items}) => ({ title, items })));
    
     })
-  }
-  componentWillUnmount() {
-    console.log('I have unmounted');
-    this.unsubscribeFromAuth();
-  }
+
+    return () => {
+      console.log(' Never have unmounted');
+      unsubscribeFromAuth();
+    }
+  }, []);
   
-  render() {
+
+  
+  
     return (
       <div>
         <Header/>
@@ -56,7 +60,7 @@ class App extends React.Component {
           <Route 
             exact 
             path='/signin' 
-            render={() => this.props.currentUser ? 
+            render={() => props.currentUser ? 
             (<Redirect to='/'/>)
             :
             (<SignINAndSignUpPage/>)
@@ -65,7 +69,7 @@ class App extends React.Component {
         </Switch>
       </div>
     );
-  }
+  
  
 }
 
