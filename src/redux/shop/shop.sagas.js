@@ -1,4 +1,4 @@
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, all } from 'redux-saga/effects';
 //listen every action of specified types we passed in
 import ShopActionTypes from './shop.types';
 import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase.utils';
@@ -25,5 +25,9 @@ export function* fetchCollectionsAsync() {
 
 export function* fetchCollectionsStart() {
     //this is how we actually are able to trigger more code to run. The second param is another generator function  
-    yield takeEvery(ShopActionTypes.FETCH_COLLECTIONS_START, fetchCollectionsAsync);
+    yield takeLatest(ShopActionTypes.FETCH_COLLECTIONS_START, fetchCollectionsAsync);
+}
+
+export function* shopSagas() {
+    yield all([call(fetchCollectionsStart)]);
 }

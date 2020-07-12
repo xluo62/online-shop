@@ -2,50 +2,55 @@ import React, { useEffect } from 'react';
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import {  connect } from 'react-redux';
-import { setCurrentUser } from './redux/user/user.actions';
+
 import HomePage from './pages/homepage/homepage.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 import ShopPage from './pages/shoppage/shop.component';
 import Header from './components/header/header.component';
 import SignINAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { createStructuredSelector } from 'reselect';
+import { checkUserSession } from './redux/user/user.actions';
 //import { selectCollectionsPreview } from './redux/shop/shop.selector';
 const App = (props) => {
- 
-  let unsubscribeFromAuth = null;
-
+  
+  
+  const { checkUserSession } = props;
   useEffect(() => {
-    console.log('I have mounted');
-    const { setCurrentUser} = props;
-    unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth){
-        const userRef = await createUserProfileDocument(userAuth);
-        //建立第二个subscription 这个链接是和具体的doc一一对应的
-        userRef.onSnapshot(snapshot => {
-          setCurrentUser(
-            {
-                id: snapshot.id,
-                ...snapshot.data()
-            });
-        });
-        
-      }
-      else{
-        setCurrentUser(userAuth);
-        console.log( `user: ${userAuth}` );
-      }
-      //addCollectionsAndDocuments('collections', 
-      //collectionsArray.map(({title, items}) => ({ title, items })));
-   
-    })
+    checkUserSession();
+  },[checkUserSession]);
+  //let unsubscribeFromAuth = null;
 
-    return () => {
-      console.log(' Never have unmounted');
-      unsubscribeFromAuth();
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log('I have mounted');
+  //   const { setCurrentUser} = props;
+  //   unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  //     if (userAuth){
+  //       const userRef = await createUserProfileDocument(userAuth);
+  //       //建立第二个subscription 这个链接是和具体的doc一一对应的
+  //       userRef.onSnapshot(snapshot => {
+  //         setCurrentUser(
+  //           {
+  //               id: snapshot.id,
+  //               ...snapshot.data()
+  //           });
+  //       });
+        
+  //     }
+  //     else{
+  //       setCurrentUser(userAuth);
+  //       console.log( `user: ${userAuth}` );
+  //     }
+  //     //addCollectionsAndDocuments('collections', 
+  //     //collectionsArray.map(({title, items}) => ({ title, items })));
+   
+  //   })
+
+  //   return () => {
+  //     console.log(' Never have unmounted');
+  //     unsubscribeFromAuth();
+  //   }
+  // }, []);
   
 
   
@@ -73,11 +78,9 @@ const App = (props) => {
  
 }
 
-const mapDispatchToProps = dispatch => (
-  {
-    setCurrentUser: user => dispatch(setCurrentUser(user))
-  }
-)
+const mapDispatchToProps = dispatch => ({
+  checkUserSession: () => dispatch(checkUserSession())
+});
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
