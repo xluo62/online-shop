@@ -7,7 +7,7 @@
 /src/firebase
 # testing
 /coverage
-
+ 
 # production
 /build
 
